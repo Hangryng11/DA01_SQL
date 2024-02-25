@@ -11,7 +11,16 @@ ELSE 'No'
 END as triangle
 FROM Triangle;
 --EX3
-SELECT 
+with aaa as (SELECT 
+sum(case when call_category is null or call_category = 'n/a' then 1        
+else 0 end) as aa1,
+sum(case when call_category is not null and call_category != 'n/a'    then 1 else 0 end) 
+as bb1
+FROM callers) 
+
+select round(sum(aa1) / sum(aa1+bb1) * 100,1) 
+as call_percentage
+from aaa;
 --Ex4
 select name
 from Customer
