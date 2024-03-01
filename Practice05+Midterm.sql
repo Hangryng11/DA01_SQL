@@ -95,4 +95,19 @@ Group by c.name,f.title)
 select MAX(count) as max, c.name from cte, category as c
 GROUP BY c.name
 --Ex 5
+with cte as (SELECT CONCAT(actor.first_name,' ' ,
+actor.last_name) as full_name, COUNT(fa.film_id) as so_luong
+from film_actor as fa
+LEFT JOIN actor
+ON fa.actor_id=actor.actor_id
+Group by actor.first_name, 
+actor.last_name, fa.film_id
+ORDER BY actor.first_name, 
+actor.last_name)
+
+SELECT full_name, SUM(so_luong)
+from cte
+group by full_name, so_luong
+ORDER BY SUM(so_luong) DESC
+--Ex6
 
