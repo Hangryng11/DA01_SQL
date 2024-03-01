@@ -34,5 +34,27 @@ from supercloud
 Where unique_count = (SELECT COUNT(DISTINCT product_category)
 From products)
 order by customer_id
---Ex5
+--Ex6
+SELECT products.product_name, SUM(orders.unit) AS unit
+FROM orders
+LEFT JOIN products
+ON orders.product_id=products.product_id
+WHERE YEAR(order_date)=2020 AND MONTH(order_date)=02
+GROUP BY product_name 
+HAVING unit >=100;
+--Ex7
+SELECT DISTINCT page_id 
+FROM pages
+WHERE  page_id NOT IN (SELECT page_id FROM page_likes)
+ORDER BY page_id;
+
+---MIDTERM
+--EX1
+SELECT DISTINCT(replacement_cost) from film
+Select MIN(replacement_cost) from film
+--EX2
+SELECT count(replacement_cost) FILTER 
+(WHERE replacement_cost BETWEEN 9.99 AND 19.99)
+from film
+
 
