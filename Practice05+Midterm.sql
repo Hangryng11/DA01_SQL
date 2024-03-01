@@ -53,8 +53,46 @@ ORDER BY page_id;
 SELECT DISTINCT(replacement_cost) from film
 Select MIN(replacement_cost) from film
 --EX2
-SELECT count(replacement_cost) FILTER 
-(WHERE replacement_cost BETWEEN 9.99 AND 19.99)
-from film
+TASK: 
+SELECT replacement_cost, CASE 
+WHEN replacement_cost BETWEEN 9.99 AND 19.99 THEN 'low'
+WHEN replacement_cost BETWEEN 20.00 AND 24.99 THEN 'medium'
+WHEN replacement_cost BETWEEN 25.00 AND 29.99 THEN 'high'
+END quality
+QUESTION:
+SELECT Count(replacement_cost) from film
+WHERE replacement_cost BETWEEN 9.99 AND 19.99
+--Ex3
+TASK:
+with abc as (select fc.film_id from film_category as fc
+LEFT JOIN film as f
+ON fc.film_id=f.film_id
+group by fc.film_id)
 
+SELECT f.title, f.length, c.name AS category_name 
+from film as f, category as c
+INNER JOIN film_category as fc
+ON fc.category_id=c.category_id
+WHERE c.name IN ('Drama','Sports')
+Order BY f.length DESC
+QUESTION:
+SELECT MAX(f.length), c.name from film as f, category as c
+INNER JOIN film_category as fc
+ON fc.category_id=c.category_id
+Group by c.name
+--EX4
+with abc as (select fc.film_id from film_category as fc
+LEFT JOIN film as f
+ON fc.film_id=f.film_id
+group by fc.film_id)
+
+with cte as (SELECT COUNT(f.title), c.name as category_name 
+from film as f, category as c
+INNER JOIN film_category as fc
+ON fc.category_id=c.category_id
+Group by c.name,f.title)
+
+select MAX(count) as max, c.name from cte, category as c
+GROUP BY c.name
+--Ex 5
 
