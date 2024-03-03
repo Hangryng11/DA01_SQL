@@ -34,6 +34,13 @@ from supercloud
 Where unique_count = (SELECT COUNT(DISTINCT product_category)
 From products)
 order by customer_id
+--EX5
+SELECT a.employee_id, a.name, 
+count(b.employee_id) as reports_count, round(avg(b.age)) as average_age
+ from Employees as a
+INNER JOIN employees as b
+ON a.employee_id=b.reports_to
+having reports_count >0
 --Ex6
 SELECT products.product_name, SUM(orders.unit) AS unit
 FROM orders
@@ -110,4 +117,35 @@ from cte
 group by full_name, so_luong
 ORDER BY SUM(so_luong) DESC
 --Ex6
+select count(address) from address
+LEFT JOIN customer
+ON address.address_id=customer.address_id
+where customer_id is null
+--EX7
+SELECT SUM(p.amount),c.city
+from city as c
+JOIN address as ad
+ON c.city_id=ad.city_id
+JOIN customer as cu
+ON ad.address_id=cu.address_id
+JOIN payment as p 
+ON p.customer_id=cu.customer_id
+GROUP by c.city
+ORDER by SUM(p.amount) DESC
+--EX8
+SELECT
+CONCAT(city,', ', country) as city_country,
+SUM(p.amount) as total
+from city as c
+JOIN address as ad
+ON c.city_id=ad.city_id
+JOIN customer as cu
+ON ad.address_id=cu.address_id
+JOIN payment as p 
+ON p.customer_id=cu.customer_id
+JOIN country
+ON c.country_id=country.country_id
+GROUP by city_country
+ORDER by total DESC
+
 
